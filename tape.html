@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #root {
+      width:100vw;
+      height:100vh;
+      background-color: gray;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #screen {
+      width:300px;
+      height:300px;
+      border: 1px solid black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #screen > div {
+      width:230px;
+      height:230px;
+      border: 1px solid black;
+    }
+
+    #screen > div:nth-child(2) {
+      width:100px;
+      height:40px;
+      background-color: white;
+      margin-top: 5px;
+    }
+    
+    #table {
+      width:800px;
+      height:200px;
+      border: 1px solid black;
+      margin-top: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: flex-end;
+    }
+
+    #table > div {
+      width:200px;
+      height:160px;
+      background-color: white;
+      margin: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #tape1 {
+      width:100px;
+      height:40px;
+      background-color: blue;
+    }
+    #tape2 {
+      width:100px;
+      height:40px;
+      background-color: red;
+    }
+    #tape3 {
+      width:100px;
+      height:40px;
+      background-color: yellow;
+    }
+
+    #tapeBox2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+  
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div id="screen">
+      <div></div>
+      <div id="insert"></div>
+    </div>
+    <div id="table">
+      <div id="tapeBox1">
+        <div id="tape1"></div>
+      </div>
+      <div id="tapeBox2">
+        <div id="tape2"></div>
+
+      </div>
+      <div id="tapeBox3">
+        <div id="tape3"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const insert = document.getElementById("insert");
+    const tape1 = document.getElementById("tape1");
+    const tape2 = document.getElementById("tape2");
+    const tape3 = document.getElementById("tape3");
+    const tapeBox1 = document.getElementById("tapeBox1");
+    const tapeBox2 = document.getElementById("tapeBox2");
+    const tapeBox3 = document.getElementById("tapeBox3");
+
+    insert.getBoundingClientRect();
+    tape1.getBoundingClientRect();
+    tape2.getBoundingClientRect();
+    tape3.getBoundingClientRect();
+
+    console.log(tape1.getBoundingClientRect())
+    console.log(tape2.getBoundingClientRect())
+    console.log(tape3.getBoundingClientRect())
+    
+    let move = insert.getBoundingClientRect();
+  
+    
+    tape1.addEventListener("click", ()=>{
+      tape1.style.transition = "2s";
+      tape1.style.overflow = "hidden";
+      tape1.style.left = insert.offsetLeft + "px";
+      tape1.style.top = insert.offsetTop + "px";
+      tape1.style.opacity = 0;
+      tape1.style.position = "absolute";
+      tape2.style.opacity=1;
+    })
+
+    tape2.addEventListener("click", ()=>{
+      tape2.style.top = insert.offsetTop + "px";
+      tape2.style.left = insert.offsetLeft + "px";
+      tape2.style.transition = "2s";
+      tape2.style.position = "absolute";
+      tape2.style.opacity = 0;
+      tape1.style.opacity=1;
+    })
+
+    tape3.addEventListener("click", ()=>{
+      tape3.style.top = insert.offsetTop + "px";
+      tape3.style.left = insert.offsetLeft + "px";
+      tape3.style.transition = "2s";
+      tape3.style.position = "absolute";
+      tape3.style.opacity = 0;
+    })
+    console.log(tape3.style.offsetHeight = insert.offsetHeight + "px")
+
+    console.log(insert.offsetTop);
+
+   
+    
+  </script>
+  
+</body>
+</html>
