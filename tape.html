@@ -119,10 +119,13 @@
     tape1.getBoundingClientRect();
     tape2.getBoundingClientRect();
     tape3.getBoundingClientRect();
+    tapeBox1.getBoundingClientRect();
+    tapeBox2.getBoundingClientRect();
+    tapeBox3.getBoundingClientRect();
 
-    console.log(tape1.getBoundingClientRect())
-    console.log(tape2.getBoundingClientRect())
-    console.log(tape3.getBoundingClientRect())
+    console.log(tapeBox1.getBoundingClientRect());
+    console.log(tapeBox2.getBoundingClientRect());
+    console.log(tapeBox3.getBoundingClientRect());
     
     let move = insert.getBoundingClientRect();
   
@@ -134,7 +137,12 @@
       tape1.style.top = insert.offsetTop + "px";
       tape1.style.opacity = 0;
       tape1.style.position = "absolute";
-      tape2.style.opacity=1;
+      tape2.style.opacity = 1;
+      tape2.style.left = tapeBox2.offsetLeft + 50 + "px";
+      tape2.style.top = tapeBox2.offsetTop + 60 + "px";
+      tape3.style.opacity = 1;
+      tape3.style.left = tapeBox3.offsetLeft + 50 + "px";
+      tape3.style.top = tapeBox3.offsetTop + 60 + "px";
     })
 
     tape2.addEventListener("click", ()=>{
@@ -143,7 +151,12 @@
       tape2.style.transition = "2s";
       tape2.style.position = "absolute";
       tape2.style.opacity = 0;
-      tape1.style.opacity=1;
+      tape1.style.opacity = 1;
+      tape1.style.left = tapeBox1.offsetLeft + 50 + "px";
+      tape1.style.top = tapeBox1.offsetTop + 60 + "px";
+      tape3.style.opacity = 1;
+      tape3.style.left = tapeBox3.offsetLeft + 50 + "px";
+      tape3.style.top = tapeBox3.offsetTop + 60 + "px";
     })
 
     tape3.addEventListener("click", ()=>{
@@ -152,6 +165,12 @@
       tape3.style.transition = "2s";
       tape3.style.position = "absolute";
       tape3.style.opacity = 0;
+      tape1.style.opacity = 1;
+      tape1.style.left = tapeBox1.offsetLeft + 50 + "px";
+      tape1.style.top = tapeBox1.offsetTop + 60 + "px";
+      tape2.style.opacity = 1;
+      tape2.style.left = tapeBox2.offsetLeft + 50 + "px";
+      tape2.style.top = tapeBox2.offsetTop + 60 + "px";
     })
     console.log(tape3.style.offsetHeight = insert.offsetHeight + "px")
 
