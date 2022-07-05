@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
+    *{margin:0; padding:0; box-sizing: border-box;}
+    
     #root {
       width:100vw;
       height:100vh;
@@ -16,7 +18,7 @@
       flex-direction: column;
     }
 
-    #screen {
+    #tv {
       width:300px;
       height:300px;
       border: 1px solid black;
@@ -26,17 +28,34 @@
       flex-direction: column;
     }
 
-    #screen > div {
+    #screen  {
       width:230px;
       height:230px;
       border: 1px solid black;
     }
 
-    #screen > div:nth-child(2) {
-      width:100px;
+    #screenBottom {
+      width:230px;
       height:40px;
       background-color: white;
       margin-top: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+
+    #insert {
+      width:100px;
+      height:38px;
+      background-color: orange;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #reset {
+      width:30px;
+      height:30px;
     }
     
     #table {
@@ -45,9 +64,7 @@
       border: 1px solid black;
       margin-top: 5px;
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-around;
-      align-items: flex-end;
     }
 
     #table > div {
@@ -65,6 +82,11 @@
       height:40px;
       background-color: blue;
     }
+
+    #tape1-1 {
+      margin-right:30px;
+    }
+
     #tape2 {
       width:100px;
       height:40px;
@@ -76,6 +98,22 @@
       background-color: yellow;
     }
 
+    #tapeBox1 {
+      /* display: flex; */
+      /* align-items:flex-start; */
+      /* justify-content: flex-start; */
+      flex-direction: column;
+    }
+    
+    #tapeBox1 > div {
+      width:100px;
+      height:40px;
+      border: 1px solid black;
+    }
+   
+
+   
+    
     #tapeBox2 {
       display: flex;
       align-items: center;
@@ -87,21 +125,24 @@
 </head>
 <body>
   <div id="root">
-    <div id="screen">
-      <div></div>
-      <div id="insert"></div>
+    <div id="tv">
+      <div id="screen"></div>
+      <div id="screenBottom">
+        <div id="insert">insert tape</div>
+        <button id="reset"></button>
+      </div>
     </div>
     <div id="table">
       <div id="tapeBox1">
         <div id="tape1"></div>
+        <div id="tape1-1"></div>
+        <div></div>
       </div>
       <div id="tapeBox2">
         <div id="tape2"></div>
-
       </div>
       <div id="tapeBox3">
         <div id="tape3"></div>
-
       </div>
     </div>
   </div>
@@ -114,7 +155,8 @@
     const tapeBox1 = document.getElementById("tapeBox1");
     const tapeBox2 = document.getElementById("tapeBox2");
     const tapeBox3 = document.getElementById("tapeBox3");
-
+    const reset = document.getElementById("reset");
+    
     insert.getBoundingClientRect();
     tape1.getBoundingClientRect();
     tape2.getBoundingClientRect();
@@ -122,19 +164,21 @@
     tapeBox1.getBoundingClientRect();
     tapeBox2.getBoundingClientRect();
     tapeBox3.getBoundingClientRect();
-
+    
     console.log(tapeBox1.getBoundingClientRect());
     console.log(tapeBox2.getBoundingClientRect());
     console.log(tapeBox3.getBoundingClientRect());
     
     let move = insert.getBoundingClientRect();
-  
+    
+    // 이걸 다 객체 or 배열로 묶어서 사용한다면?!?!
+    // 테이프의 개수가 겁나게 많아도 핸들링이 가능하게...
     
     tape1.addEventListener("click", ()=>{
       tape1.style.transition = "1.5s";
       tape1.style.left = insert.offsetLeft + "px";
       tape1.style.top = insert.offsetTop + "px";
-      tape1.style.opacity = 0;
+      tape1.style.opacity = 0.5;
       tape1.style.position = "absolute";
       tape2.style.opacity = 1;
       tape2.style.left = tapeBox2.offsetLeft + 50 + "px";
@@ -142,40 +186,58 @@
       tape3.style.opacity = 1;
       tape3.style.left = tapeBox3.offsetLeft + 50 + "px";
       tape3.style.top = tapeBox3.offsetTop + 60 + "px";
+      console.log("########TAPE1");
     })
 
     tape2.addEventListener("click", ()=>{
-      tape2.style.top = insert.offsetTop + "px";
-      tape2.style.left = insert.offsetLeft + "px";
       tape2.style.transition = "1.5s";
+      tape2.style.left = insert.offsetLeft + "px";
+      tape2.style.top = insert.offsetTop + "px";
       tape2.style.position = "absolute";
-      tape2.style.opacity = 0;
+      tape2.style.opacity = 0.5;
       tape1.style.opacity = 1;
-      tape1.style.left = tapeBox1.offsetLeft + 50 + "px";
-      tape1.style.top = tapeBox1.offsetTop + 60 + "px";
+      tape1.style.left = tapeBox1.offsetLeft + 50+ "px";
+      tape1.style.top = tapeBox1.offsetTop +  "px";
       tape3.style.opacity = 1;
       tape3.style.left = tapeBox3.offsetLeft + 50 + "px";
       tape3.style.top = tapeBox3.offsetTop + 60 + "px";
+      console.log("########TAPE2");
+
     })
 
     tape3.addEventListener("click", ()=>{
-      tape3.style.top = insert.offsetTop + "px";
-      tape3.style.left = insert.offsetLeft + "px";
       tape3.style.transition = "1.5s";
+      tape3.style.left = insert.offsetLeft + "px";
+      tape3.style.top = insert.offsetTop + "px";
       tape3.style.position = "absolute";
-      tape3.style.opacity = 0;
+      tape3.style.opacity = 0.5;
       tape1.style.opacity = 1;
       tape1.style.left = tapeBox1.offsetLeft + 50 + "px";
-      tape1.style.top = tapeBox1.offsetTop + 60 + "px";
+      tape1.style.top = tapeBox1.offsetTop +"px";
       tape2.style.opacity = 1;
       tape2.style.left = tapeBox2.offsetLeft + 50 + "px";
       tape2.style.top = tapeBox2.offsetTop + 60 + "px";
+      console.log("########TAPE3");
     })
+
     console.log(tape3.style.offsetHeight = insert.offsetHeight + "px")
 
     console.log(insert.offsetTop);
 
-    // 이걸 다 객체 or 배열로 묶어서 사용한다면?!?!
+    reset.addEventListener ("click", () =>{
+      tape1.style.opacity = 1;
+      tape1.style.left = tapeBox1.offsetLeft + 50 + "px";
+      tape1.style.top = tapeBox1.offsetTop + "px";
+      tape2.style.opacity = 1;
+      tape2.style.left = tapeBox2.offsetLeft + 50 + "px";
+      tape2.style.top = tapeBox2.offsetTop + 60 + "px";
+      tape3.style.opacity = 1;
+      tape3.style.left = tapeBox3.offsetLeft + 50 + "px";
+      tape3.style.top = tapeBox3.offsetTop + 60 + "px";
+      tape1.style.display = "flex";
+
+    })
+
 
    
     
