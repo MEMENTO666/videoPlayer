@@ -45,8 +45,8 @@
     }
 
     #insert {
-      width:100px;
-      height:38px;
+      width: 100px;
+      height: 38px;
       background-color: orange;
       display: flex;
       align-items: center;
@@ -59,67 +59,18 @@
     }
     
     #table {
-      width:800px;
-      height:200px;
+      width: 800px;
+      height: 200px;
       border: 1px solid black;
       margin-top: 5px;
       display: flex;
-      justify-content: space-around;
-    }
-
-    #table > div {
-      width:200px;
-      height:160px;
-      background-color: white;
-      margin: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      padding-top: 2%;
+      padding-bottom: 2%;
+      padding-left: 2%;
+      padding-right: 2%;
     }
     
-    #tape1 {
-      width:100px;
-      height:40px;
-      background-color: blue;
-    }
-
-    #tape1-1 {
-      margin-right:30px;
-    }
-
-    #tape2 {
-      width:100px;
-      height:40px;
-      background-color: red;
-    }
-    #tape3 {
-      width:100px;
-      height:40px;
-      background-color: yellow;
-    }
-
-    #tapeBox1 {
-      /* display: flex; */
-      /* align-items:flex-start; */
-      /* justify-content: flex-start; */
-      flex-direction: column;
-    }
-    
-    #tapeBox1 > div {
-      width:100px;
-      height:40px;
-      border: 1px solid black;
-    }
-   
-
-   
-    
-    #tapeBox2 {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  
   
   </style>
 </head>
@@ -132,115 +83,105 @@
         <button id="reset"></button>
       </div>
     </div>
+
     <div id="table">
-      <div id="tapeBox1">
-        <div id="tape1"></div>
-        <div id="tape1-1"></div>
-        <div></div>
-      </div>
-      <div id="tapeBox2">
-        <div id="tape2"></div>
-      </div>
-      <div id="tapeBox3">
-        <div id="tape3"></div>
-      </div>
     </div>
+    
   </div>
 
   <script>
-    const insert = document.getElementById("insert");
-    const tape1 = document.getElementById("tape1");
-    const tape2 = document.getElementById("tape2");
-    const tape3 = document.getElementById("tape3");
-    const tapeBox1 = document.getElementById("tapeBox1");
-    const tapeBox2 = document.getElementById("tapeBox2");
-    const tapeBox3 = document.getElementById("tapeBox3");
-    const reset = document.getElementById("reset");
+    const table = document.getElementById('table');
+
+    // 전역 변수, 반드시 함수들보다 위에 있어야함
+    let target = null; 
+    const insertTape = document.getElementById('insert');
+    let insertTapeRect = insertTape.getBoundingClientRect();
+    const resetButton = document.getElementById('reset');
+
+    const createTapeBox = (parent, boxName, tapeWidth, tapeHeight) => {
+      const tapeBox = document.createElement('div');
+      tapeBox.id = boxName;
+      tapeBox.style.width = "30%";
+      tapeBox.style.height = "100%";
+      tapeBox.style.border = '1px solid #000';
+      tapeBox.style.display = 'flex';
+      tapeBox.style.flexDirection = 'column';
+      tapeBox.style.justifyContent = 'flex-end';
+      tapeBox.style.alignItems = 'flex-end';
+      
+      for(let i=0; i<3; i++) {
+        const frame = document.createElement('div');
+        frame.id = boxName + '_frame_' + i.toString();
+        frame.style.width = `${tapeWidth}px`;
+        frame.style.height = `${tapeHeight}px`;
+        frame.style.border = '1px solid #F0F0F0'; // remove later
+        frame.style.transformStyle = 'preserve-3d'; // 3d값 그대로 전달
+        frame.style.perspective = '20px';
+
+        const frameSize = frame.getBoundingClientRect();
+        const realTape = document.createElement('div');
+        realTape.id = 'realTape_' + i.toString();
+        realTape.style.width = `${tapeWidth}px`;
+        realTape.style.height = `${tapeHeight}px`;
+        realTape.style.backgroundColor = 'cyan';
+        realTape.style.transition = '0.6s';
+        realTape.style.position = 'absolute';
+        frame.appendChild(realTape);
+        tapeBox.appendChild(frame);
+      }
+
+      parent.appendChild(tapeBox);
+    }
+
+    const setAnimatedBox = (elementId) => {
+      const box = document.getElementById(elementId);
+      if(!box) {
+        console.log('박스가 없다...');
+        return;
+      }
+      Array.from(box.children).forEach(tb => {
+        const real = tb.firstChild;
+        real.addEventListener('click', () => {
+          if(target !== null) {
+            target.style.transform = 'translate(0,0)';
+          }
+          target = real;
+          const selfRect = real.getBoundingClientRect();
+          const xDiff = insertTapeRect.left - selfRect.left;
+          const yDiff = insertTapeRect.top - selfRect.top;
+          setTimeout(() => {
+            real.style.transform = `translate3d(${xDiff}px, ${yDiff}px, 0px)`;
+          }, 650);
+          real.style.transform = `translate3d(${xDiff}px, ${yDiff}px, 3px)`;
+        });
+      });
+    }
     
-    insert.getBoundingClientRect();
-    tape1.getBoundingClientRect();
-    tape2.getBoundingClientRect();
-    tape3.getBoundingClientRect();
-    tapeBox1.getBoundingClientRect();
-    tapeBox2.getBoundingClientRect();
-    tapeBox3.getBoundingClientRect();
-    
-    console.log(tapeBox1.getBoundingClientRect());
-    console.log(tapeBox2.getBoundingClientRect());
-    console.log(tapeBox3.getBoundingClientRect());
-    
-    let move = insert.getBoundingClientRect();
-    
-    // 이걸 다 객체 or 배열로 묶어서 사용한다면?!?!
-    // 테이프의 개수가 겁나게 많아도 핸들링이 가능하게...
-    
-    tape1.addEventListener("click", ()=>{
-      tape1.style.transition = "1.5s";
-      tape1.style.left = insert.offsetLeft + "px";
-      tape1.style.top = insert.offsetTop + "px";
-      tape1.style.opacity = 0.5;
-      tape1.style.position = "absolute";
-      tape2.style.opacity = 1;
-      tape2.style.left = tapeBox2.offsetLeft + 50 + "px";
-      tape2.style.top = tapeBox2.offsetTop + 60 + "px";
-      tape3.style.opacity = 1;
-      tape3.style.left = tapeBox3.offsetLeft + 50 + "px";
-      tape3.style.top = tapeBox3.offsetTop + 60 + "px";
-      console.log("########TAPE1");
-    })
+    try {
+      createTapeBox(table, 'tapeBox1', 100, 38);
+      setAnimatedBox('tapeBox1');
 
-    tape2.addEventListener("click", ()=>{
-      tape2.style.transition = "1.5s";
-      tape2.style.left = insert.offsetLeft + "px";
-      tape2.style.top = insert.offsetTop + "px";
-      tape2.style.position = "absolute";
-      tape2.style.opacity = 0.5;
-      tape1.style.opacity = 1;
-      tape1.style.left = tapeBox1.offsetLeft + 50+ "px";
-      tape1.style.top = tapeBox1.offsetTop +  "px";
-      tape3.style.opacity = 1;
-      tape3.style.left = tapeBox3.offsetLeft + 50 + "px";
-      tape3.style.top = tapeBox3.offsetTop + 60 + "px";
-      console.log("########TAPE2");
+      createTapeBox(table, 'tapeBox2', 100, 38);
+      setAnimatedBox('tapeBox2');
 
-    })
+      createTapeBox(table, 'tapeBox3', 100, 38);
+      setAnimatedBox('tapeBox3');
 
-    tape3.addEventListener("click", ()=>{
-      tape3.style.transition = "1.5s";
-      tape3.style.left = insert.offsetLeft + "px";
-      tape3.style.top = insert.offsetTop + "px";
-      tape3.style.position = "absolute";
-      tape3.style.opacity = 0.5;
-      tape1.style.opacity = 1;
-      tape1.style.left = tapeBox1.offsetLeft + 50 + "px";
-      tape1.style.top = tapeBox1.offsetTop +"px";
-      tape2.style.opacity = 1;
-      tape2.style.left = tapeBox2.offsetLeft + 50 + "px";
-      tape2.style.top = tapeBox2.offsetTop + 60 + "px";
-      console.log("########TAPE3");
-    })
+      // 창 크기 변경시켰을 때 호출됨 (드래그 중에 아주 빠르게)
+      window.addEventListener('resize', () => {
+        insertTapeRect = insertTape.getBoundingClientRect();
+      });
 
-    console.log(tape3.style.offsetHeight = insert.offsetHeight + "px")
-
-    console.log(insert.offsetTop);
-
-    reset.addEventListener ("click", () =>{
-      tape1.style.opacity = 1;
-      tape1.style.left = tapeBox1.offsetLeft + 50 + "px";
-      tape1.style.top = tapeBox1.offsetTop + "px";
-      tape2.style.opacity = 1;
-      tape2.style.left = tapeBox2.offsetLeft + 50 + "px";
-      tape2.style.top = tapeBox2.offsetTop + 60 + "px";
-      tape3.style.opacity = 1;
-      tape3.style.left = tapeBox3.offsetLeft + 50 + "px";
-      tape3.style.top = tapeBox3.offsetTop + 60 + "px";
-      tape1.style.display = "flex";
-
-    })
-
-
-   
-    
+      // 리셋 버튼 처리
+      resetButton.addEventListener('click', () => {
+        target.style.transform = 'translateZ(3px)'; // z축 잠깐 띄움
+        setTimeout(() => {
+          target.style.transform = 'translate3d(0,0,0)'; // 1초 뒤 원래대로 돌려놓음
+        }, 650);
+      });
+    } catch(err) { 
+      console.log('err = ', err);
+    }
   </script>
   
 </body>
